@@ -35,7 +35,7 @@ boolean reconnect() {
 }
 
 void sendValues(float moisture) {
-  mqttClient.publish(mqttTemperatureTopic, String(bme.readTemperature() - 2.45).c_str());
+  mqttClient.publish(mqttTemperatureTopic, String(bme.readTemperature()).c_str());
   mqttClient.publish(mqttHumidityTopic, String(bme.readHumidity()).c_str());
   mqttClient.publish(mqttPressureTopic, String(bme.readPressure() / 100.0F).c_str());
   mqttClient.publish(mqttMoistureTopic, String(moisture).c_str());
@@ -43,7 +43,7 @@ void sendValues(float moisture) {
 
 void printValues(float moisture) {
   Serial.print("Temperature = ");
-  Serial.print(bme.readTemperature() - 2.45);
+  Serial.print(bme.readTemperature());
   Serial.println(" *C");
 
   Serial.print("Pressure = ");
