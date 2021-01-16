@@ -34,6 +34,34 @@ boolean reconnect() {
   return mqttClient.connected();
 }
 
+void sendValues(float moisture) {
+  mqttClient.publish(mqttTemperatureTopic, String(bme.readTemperature() - 2.45).c_str());
+  mqttClient.publish(mqttHumidityTopic, String(bme.readHumidity()).c_str());
+  mqttClient.publish(mqttPressureTopic, String(bme.readPressure() / 100.0F).c_str());
+  mqttClient.publish(mqttMoistureTopic, String(moisture).c_str());
+}
+
+void printValues(float moisture) {
+  Serial.print("Temperature = ");
+  Serial.print(bme.readTemperature() - 2.45);
+  Serial.println(" *C");
+
+  Serial.print("Pressure = ");
+  Serial.print(bme.readPressure() / 100.0F);
+  Serial.println(" hPa");
+
+  Serial.print("Humidity = ");
+  Serial.print(bme.readHumidity());
+  Serial.println(" %");
+
+  Serial.print("Moisture = ");
+  Serial.print(moisture);
+  Serial.println(" %");
+  Serial.println(analogRead(A0));
+
+  Serial.println();
+}
+
 void setup() {
   Serial.begin(115200);
   while (!Serial);
@@ -90,30 +118,3 @@ void loop() {
   delay(delayTime);
 }
 
-void sendValues(float moisture) {
-  mqttClient.publish(mqttTemperatureTopic, String(bme.readTemperature()).c_str());
-  mqttClient.publish(mqttHumidityTopic, String(bme.readHumidity()).c_str());
-  mqttClient.publish(mqttPressureTopic, String(bme.readPressure() / 100.0F).c_str());
-  mqttClient.publish(mqttMoistureTopic, String(moisture).c_str());
-}
-
-void printValues(float moisture) {
-  Serial.print("Temperature = ");
-  Serial.print(bme.readTemperature());
-  Serial.println(" *C");
-
-  Serial.print("Pressure = ");
-  Serial.print(bme.readPressure() / 100.0F);
-  Serial.println(" hPa");
-
-  Serial.print("Humidity = ");
-  Serial.print(bme.readHumidity());
-  Serial.println(" %");
-
-  Serial.print("Moisture = ");
-  Serial.print(moisture);
-  Serial.println(" %");
-  Serial.println(analogRead(A0));
-
-  Serial.println();
-}
